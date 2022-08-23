@@ -7,17 +7,19 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
-import createEmotionCache from '../utility/createEmotionCache';
-import lightThemeOptions from '../styles/theme/lightThemeOptions';
-import '../styles/globals.css';
-import { AuthProvider } from '../context/auth.provider';
 import { NextPage } from 'next';
-import darkThemeOptions from '../styles/theme/darkThemeOptions';
-import AppLayout from '../containers/AppLayout';
+
+import '../styles/globals.css';
+import createEmotionCache from '../utility/createEmotionCache';
+import { AuthProvider } from '../context/auth.provider';
+
+import { lightTheme } from '../styles/theme/lightTheme';
+import { darkTheme } from '../styles/theme/darkTheme';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: React.ReactElement) => React.ReactNode;
+	authDisabled?: boolean;
 };
 interface MyAppProps extends AppProps {
 	Component: NextPageWithLayout;
@@ -25,8 +27,6 @@ interface MyAppProps extends AppProps {
 }
 
 const clientSideEmotionCache = createEmotionCache();
-
-const darkTheme = createTheme(darkThemeOptions);
 
 const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 	const {
@@ -39,10 +39,16 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 
 	return (
 		<CacheProvider value={emotionCache}>
-			<ThemeProvider theme={darkTheme}>
+			<ThemeProvider theme={lightTheme}>
 				<CssBaseline />
 				<AuthProvider>
-					{getLayout(<Component {...pageProps} />)}
+					{!Component.authDisabled ? (
+						<ProtectedRoute>
+							{getLayout(<Component {...pageProps} />)}
+						</ProtectedRoute>
+					) : (
+						<>{getLayout(<Component {...pageProps} />)}</>
+					)}
 				</AuthProvider>
 			</ThemeProvider>
 		</CacheProvider>

@@ -1,26 +1,25 @@
-html,
+
+
+/* For whitespace on the sides varying with width */
+.padding-alignment {
+  /* @apply sm: px-24 px-2; */
+}
+
+.margin-alignment {
+  /* @apply sm: mx-24 mx-2; */
+}
+
+/* Add this class to hide horizontal scrolls */
+.hide-scroll-x::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Default body background from our theme */
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* @apply bg-paper; */
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
+/* Prevents blue highlight color of elements when tapped on phones */
 * {
-  box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+  -webkit-tap-highlight-color: transparent;
 }

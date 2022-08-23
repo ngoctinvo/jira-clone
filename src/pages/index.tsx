@@ -11,14 +11,8 @@ import { NextPageWithLayout } from './_app';
 
 const Home: NextPageWithLayout = () => {
 	const { authState, authDispatch } = useAuth();
-	const {isAuthenticated, token, user } = authState;
+	const { isAuthenticated, token, user } = authState;
 	const router = useRouter();
-
-	useEffect(() => {
-		if (!isAuthenticated) {
-			router.push('/signin');
-		}
-	}, []);
 
 	return (
 		<div>

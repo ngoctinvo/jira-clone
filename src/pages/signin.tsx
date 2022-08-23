@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Input, InputLabel, TextField } from '@mui/material';
 import { useAuth } from '../context/auth.context';
 import userAPI from '../services/userAPI';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
 const SignInPage = (props: Props) => {
+	const router = useRouter();
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.push('/');
+		}
+	}, [isAuthenticated]);
 
 	const handleSignIn = async () => {
 		try {
@@ -48,7 +56,6 @@ const SignInPage = (props: Props) => {
 					label="Email"
 					type="email"
 					required
-					variant="filled"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
@@ -56,7 +63,6 @@ const SignInPage = (props: Props) => {
 					label="Password"
 					type="password"
 					required
-					variant="filled"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
@@ -67,5 +73,6 @@ const SignInPage = (props: Props) => {
 		</div>
 	);
 };
+SignInPage.authDisabled = true;
 
 export default SignInPage;
