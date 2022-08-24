@@ -41,7 +41,7 @@ axiosClient.interceptors.response.use(
 	(response: any) => {
 		// request thành công
 		// thay đổi format của reponse trước khi trả ra cho nơi gọi request
-		return response.data;
+		return response.data.content;
 	},
 	(error: AxiosError<{ content: string }>) => {
 		// request thất bại

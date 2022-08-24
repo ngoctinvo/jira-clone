@@ -18,7 +18,7 @@ import { darkTheme } from '../styles/theme/darkTheme';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 export type NextPageWithLayout = NextPage & {
-	getLayout?: (page: React.ReactElement) => React.ReactNode;
+	getLayout?: (page: React.ReactElement) => React.ReactElement;
 	authDisabled?: boolean;
 };
 interface MyAppProps extends AppProps {

@@ -1,10 +1,15 @@
 import {
+	SignInContent,
 	SignInResponse,
 	SignUpResponse,
 	UserJiraLogin,
 	UserJiraModel,
 } from '../interface/userAuthentication';
 import axiosClient from './axiosClient';
+
+interface Payload {
+	content: SignInContent;
+}
 
 const userAPI = {
 	register: (registerInfo: UserJiraModel) => {
@@ -13,10 +18,7 @@ const userAPI = {
 		});
 	},
 	signIn: (loginInfo: UserJiraLogin) => {
-		return axiosClient.post<SignInResponse | string>(
-			'Users/signin',
-			loginInfo
-		);
+		return axiosClient.post<Payload>('Users/signin', loginInfo);
 	},
 	validateToken: (token: string) => {
 		return axiosClient.post<string>('Users/TestToken', {
