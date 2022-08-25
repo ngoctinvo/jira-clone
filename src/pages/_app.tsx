@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { AppProps } from 'next/app';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import { ThemeProvider, CssBaseline, createTheme, StyledEngineProvider } from '@mui/material';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -16,6 +16,7 @@ import { AuthProvider } from '../context/auth.provider';
 import { lightTheme } from '../styles/theme/lightTheme';
 import { darkTheme } from '../styles/theme/darkTheme';
 import ProtectedRoute from '../components/ProtectedRoute';
+import GlobalCssPriority from '../components/GlobalCssPriority';
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: React.ReactElement) => React.ReactElement;
@@ -38,7 +39,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 	const getLayout = Component.getLayout ?? ((page) => page);
 
 	return (
-		<CacheProvider value={emotionCache}>
+		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={lightTheme}>
 				<CssBaseline />
 				<AuthProvider>
@@ -51,7 +52,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 					)}
 				</AuthProvider>
 			</ThemeProvider>
-		</CacheProvider>
+		</StyledEngineProvider>
 	);
 };
 

@@ -1,4 +1,6 @@
+@import "tailwindcss/components";
 
+@import "tailwindcss/utilities";
 
 /* For whitespace on the sides varying with width */
 .padding-alignment {
