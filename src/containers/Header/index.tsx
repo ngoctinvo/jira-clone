@@ -16,12 +16,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../context/auth.context';
 import styles from './styles.module.scss';
 // import AuthForm from "/components/AuthForm";
 // import { AuthContext } from "/context/auth/auth.context";
 import logo from '/public/images/logocute.png';
 
 const Header = () => {
+	const { authState, authDispatch } = useAuth();
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -285,6 +287,17 @@ const Header = () => {
 							)}
 						</Box>
 					)} */}
+					<Button
+						variant="contained"
+						sx={{ mt: 3, mb: 2 }}
+						onClick={() => {
+							authDispatch({
+								type: 'LOGOUT',
+							});
+						}}
+					>
+						Sign Out
+					</Button>
 				</Toolbar>
 			</Container>
 		</AppBar>

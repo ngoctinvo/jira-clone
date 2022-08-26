@@ -26,6 +26,8 @@ import { useRouter } from 'next/router';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import BrandLogo from '../components/icons/BrandLogo';
+import SignInButton from '../components/shared/SignInButton';
+import SignInForm from '../components/features/auth/SignInForm';
 
 type Props = {};
 
@@ -54,25 +56,15 @@ const SignInPage = (props: Props) => {
 	const router = useRouter();
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const schema = yup
 		.object({
-			email: yup
-				.string()
-				.email('Email không hợp lệ')
-				.required('Trường này là bắt buộc'),
-			password: yup.string().required('Mật khẩu không được để trống'),
+			email: yup.string().email().required(),
+			password: yup.string().required(),
 		})
 		.required();
 
-	const {
-		formState: { errors },
-		control,
-		handleSubmit,
-	} = useForm({ resolver: yupResolver(schema) });
+	const formControls = useForm({ resolver: yupResolver(schema) });
 
 	useEffect(() => {
 		if (isAuthenticated) {
@@ -80,56 +72,10 @@ const SignInPage = (props: Props) => {
 		}
 	}, [isAuthenticated]);
 
-	const handleSignIn = async () => {
-		try {
-			const data = await userAPI.signIn({
-				email: email,
-				password: password,
-			});
-			console.log(data);
-			// Case: wrong credentials
-			if (!data.accessToken) {
-				console.log('Sai tài khoản/mật khẩu');
-				return;
-			}
-			// Case: correct credentials
-			console.log(data);
-			authDispatch({
-				type: 'UPDATE_USER',
-				payload: data,
-			});
-			authDispatch({
-				type: 'STORE_TOKEN',
-				payload: data.accessToken,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
 	const handleSignOut = () => {};
 
 	return (
 		<div>
-			{/* <h1 className="text-red-500">Sign In</h1>
-			<form>
-				<TextField
-					label="Email"
-					type="email"
-					required
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<TextField
-					label="Password"
-					type="password"
-					required
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-			</form>
-			<Button variant="contained" onClick={handleSignIn}>
-				Sign in
-			</Button> */}
 			<Container component="main" maxWidth="xs">
 				<div className="w-2/3 mx-auto">
 					<BrandLogo className="" />
@@ -144,81 +90,11 @@ const SignInPage = (props: Props) => {
 						boxShadow: 'rgb(0 0 0 / 10%) 0px 0px 10px',
 					}}
 				>
-					<Box
-						component="form"
-						onSubmit={handleSignIn}
-						sx={{ mt: 1 }}
-					>
-						<Typography align="center" className="font-bold">
-							Log in to your account
-						</Typography>
-						<Controller
-							name="email"
-							defaultValue=""
-							control={control}
-							render={({ field }) => (
-								<TextField
-									error={!!errors?.password}
-									label="Email"
-									helperText={
-										errors?.password?.message as ReactNode
-									}
-									type="email"
-									autoComplete="email"
-									fullWidth
-									required
-									margin="normal"
-									{...field}
-								/>
-							)}
-						/>
-						<Controller
-							name="password"
-							defaultValue=""
-							control={control}
-							render={({ field }) => (
-								<TextField
-									error={!!errors?.password}
-									label="Password"
-									helperText={
-										errors?.password?.message as ReactNode
-									}
-									type="password"
-									autoComplete="current-password"
-									fullWidth
-									required
-									{...field}
-								/>
-							)}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox value="remember" color="primary" />
-							}
-							label="Remember me"
-						/>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							sx={{ mt: 3, mb: 2 }}
-						>
-							Sign In
-						</Button>
-						<Grid container>
-							<Grid item xs>
-								<Link href="#" variant="body2">
-									Forgot password?
-								</Link>
-							</Grid>
-							<Grid item>
-								<Link href="#" variant="body2">
-									{"Don't have an account? Sign Up"}
-								</Link>
-							</Grid>
-						</Grid>
-					</Box>
+					<SignInForm
+						formControls={formControls}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
+					/>
 				</Box>
 				<Copyright sx={{ mt: 8, mb: 4 }} />
 			</Container>

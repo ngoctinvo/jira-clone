@@ -1,114 +1,145 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { useContext, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import * as yup from "yup";
-import { getAuthClient } from "/apis/getAuthClient";
-import userAPI from "../../../../services/userAPI";
-import LoadingScreen from "../../../shared/LoadingScreen";
+import { yupResolver } from '@hookform/resolvers/yup';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { ReactNode, useContext, useState } from 'react';
+import {
+	Controller,
+	FieldValues,
+	useForm,
+	UseFormReturn,
+} from 'react-hook-form';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
 
-import { useAuth } from "../../../../context/auth.context";
-import { UserJiraLogin } from "../../../../interface/userAuthentication";
+import { useAuth } from '../../../../context/auth.context';
+import { UserJiraLogin } from '../../../../interface/userAuthentication';
+import {
+	Checkbox,
+	FormControlLabel,
+	Grid,
+	Link,
+	Typography,
+} from '@mui/material';
+import SignInButton from '../../../shared/SignInButton';
+import userAPI from '../../../../services/userAPI';
 
-export default function SignInForm() {
-    const schema = yup
-        .object({
-            email: yup
-                .string()
-                .email("Email không hợp lệ")
-                .required("Trường này là bắt buộc"),
-            password: yup.string().required("Mật khẩu không được để trống"),
-        })
-        .required();
+interface Props {
+	formControls: UseFormReturn<FieldValues, any>;
+	isLoading: boolean;
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-    const {
-        formState: { errors },
-        control,
-        handleSubmit,
-    } = useForm({ resolver: yupResolver(schema) });
+export default function SignInForm({
+	formControls,
+	isLoading,
+	setIsLoading,
+}: Props) {
+	const {
+		handleSubmit,
+		control,
+		formState: { errors },
+		setError,
+	} = formControls;
+	const { authDispatch } = useAuth();
 
+	const onSubmit = async ({ email, password }: any) => {
+		setIsLoading(true);
+		try {
+			const data = await userAPI.signIn({
+				email,
+				password,
+			});
+			// Case: wrong credentials
+			if (!data.accessToken) {
+				setError('email', {
+					type: 'focus',
+					message: 'Wrong email or password',
+				});
+				setError('password', {
+					type: 'focus',
+					message: 'Wrong email or password',
+				});
+				return;
+			}
+			// Case: correct credentials
+			authDispatch({
+				type: 'UPDATE_USER',
+				payload: data,
+			});
+			authDispatch({
+				type: 'STORE_TOKEN',
+				payload: data.accessToken,
+			});
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-    const { authDispatch } = useAuth()
+	return (
+		<Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+			<Typography align="center" className="font-bold">
+				Log in to your account
+			</Typography>
+			<Controller
+				name="email"
+				defaultValue=""
+				control={control}
+				render={({ field }) => (
+					<TextField
+						error={!!errors?.email}
+						label="Email"
+						helperText={errors?.email?.message as ReactNode}
+						type="email"
+						autoComplete="email"
+						fullWidth
+						required
+						margin="normal"
+						{...field}
+					/>
+				)}
+			/>
+			<Controller
+				name="password"
+				defaultValue=""
+				control={control}
+				render={({ field }) => (
+					<TextField
+						error={!!errors?.password}
+						label="Password"
+						helperText={errors?.password?.message as ReactNode}
+						type="password"
+						autoComplete="current-password"
+						fullWidth
+						required
+						{...field}
+					/>
+				)}
+			/>
 
-    const [loading, setLoading] = useState(false);
-
-    const handleSignIn = async(data: UserJiraLogin) => {
-        setLoading(true);
-        const res = await userAPI.signIn(data);
-        if (res ? .data ? .message === "OK") {
-            toast.success("Đăng nhập thành công!");
-            authDispatch({
-                type: "LOGIN",
-                payload: res.data.data,
-            });
-            setLoading(false);
-            window.location.reload();
-            return;
-        }
-        toast.error(
-            res ? .data ? .message ?
-            `Có lỗi xảy ra: ${res.data.message}` :
-            "Email hoặc mật khẩu không đúng!"
-        );
-        setLoading(false);
-    };
-
-    return ( <
-        Box component = "form"
-        noValidate autoComplete = "off"
-        onSubmit = { handleSubmit((data) => handleSignIn(data)) } >
-        { loading && < LoadingScreen / > } <
-        Box sx = {
-            { display: "flex", flexDirection: "column", mt: 2 } } >
-        <
-        Controller name = "email"
-        defaultValue = ""
-        control = { control }
-        render = {
-            ({ field }) => ( <
-                TextField error = {!!errors ? .email }
-                label = "Email"
-                helperText = { errors ? .email ? .message }
-                variant = "standard"
-                type = "email"
-                sx = {
-                    { mb: 2 } } {...field }
-                />
-            )
-        }
-        />
-
-        <
-        Controller name = "password"
-        defaultValue = ""
-        control = { control }
-        render = {
-            ({ field }) => ( <
-                TextField error = {!!errors ? .password }
-                label = "Mật khẩu"
-                helperText = { errors ? .password ? .message }
-                variant = "standard"
-                type = "password"
-                autoComplete = "current-password" {...field }
-                />
-            )
-        }
-        /> <
-        /Box> <
-        Box sx = {
-            { display: "flex", justifyContent: "flex-end" } } >
-        <
-        Button className = "btnPrimary"
-        type = "submit"
-        variant = "contained"
-        sx = {
-            { mt: 2 } } >
-        Đăng nhập <
-        /Button> <
-        /Box> <
-        /Box>
-    );
+			<FormControlLabel
+				control={<Checkbox value="remember" color="primary" />}
+				label="Remember me"
+			/>
+			<SignInButton
+				type="submit"
+				fullWidth
+				variant="contained"
+				loading={isLoading}
+				sx={{ mt: 3, mb: 2 }}
+			>
+				Sign In
+			</SignInButton>
+			<Grid container spacing={1}>
+				<Grid item>
+					<Link href="#">Forgot password?</Link>
+				</Grid>
+				<Grid item>
+					<Link href="#">{"Don't have an account? Sign Up"}</Link>
+				</Grid>
+			</Grid>
+		</Box>
+	);
 }

@@ -31,6 +31,16 @@ function reducer(
 				isAuthenticated: false,
 			};
 		}
+		case 'LOGOUT': {
+			localStorage.removeItem('user');
+			localStorage.removeItem('access_token');
+			return {
+				...state,
+				user: null,
+				token: '',
+				isAuthenticated: false,
+			};
+		}
 		case 'UPDATE_USER': {
 			localStorage.setItem('user', JSON.stringify(action.payload));
 
