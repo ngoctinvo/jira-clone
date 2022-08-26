@@ -18,7 +18,7 @@ const userAPI = {
 		});
 	},
 	signIn: (loginInfo: UserJiraLogin) => {
-		return axiosClient.post<Payload>('Users/signin', loginInfo);
+		return axiosClient.post<SignInContent>('Users/signin', loginInfo);
 	},
 	validateToken: (token: string) => {
 		return axiosClient.post<string>('Users/TestToken', {

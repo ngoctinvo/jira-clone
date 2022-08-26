@@ -7,9 +7,11 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { getAuthClient } from "/apis/getAuthClient";
-import LoadingScreen from "/components/LoadingScreen";
+import userAPI from "../../../../services/userAPI";
+import LoadingScreen from "../../../shared/LoadingScreen";
 
-import { AuthContext } from "/context/auth/auth.context";
+import { useAuth } from "../../../../context/auth.context";
+import { UserJiraLogin } from "../../../../interface/userAuthentication";
 
 export default function SignInForm() {
     const schema = yup
@@ -28,13 +30,14 @@ export default function SignInForm() {
         handleSubmit,
     } = useForm({ resolver: yupResolver(schema) });
 
-    const { authDispatch } = useContext(AuthContext);
+
+    const { authDispatch } = useAuth()
 
     const [loading, setLoading] = useState(false);
 
-    const handleSignIn = async(data) => {
+    const handleSignIn = async(data: UserJiraLogin) => {
         setLoading(true);
-        const res = await getAuthClient().login(data);
+        const res = await userAPI.signIn(data);
         if (res ? .data ? .message === "OK") {
             toast.success("Đăng nhập thành công!");
             authDispatch({

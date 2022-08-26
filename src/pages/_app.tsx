@@ -15,8 +15,7 @@ import { AuthProvider } from '../context/auth.provider';
 
 import { lightTheme } from '../styles/theme/lightTheme';
 import { darkTheme } from '../styles/theme/darkTheme';
-import ProtectedRoute from '../components/ProtectedRoute';
-import GlobalCssPriority from '../components/GlobalCssPriority';
+import ProtectedRoute from '../components/features/auth/ProtectedRoute';
 
 export type NextPageWithLayout = NextPage & {
 	getLayout?: (page: React.ReactElement) => React.ReactElement;
@@ -39,7 +38,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 	const getLayout = Component.getLayout ?? ((page) => page);
 
 	return (
-		<StyledEngineProvider injectFirst>
+		// <StyledEngineProvider injectFirst>
 			<ThemeProvider theme={lightTheme}>
 				<CssBaseline />
 				<AuthProvider>
@@ -52,7 +51,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
 					)}
 				</AuthProvider>
 			</ThemeProvider>
-		</StyledEngineProvider>
+		// </StyledEngineProvider>
 	);
 };
 
