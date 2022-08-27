@@ -7,6 +7,11 @@ const lightThemeOptions: ThemeOptions = {
 			main: '#0052CC',
 		},
 	},
+	typography: {
+		button: {
+			textTransform: 'none',
+		},
+	},
 	components: {
 		MuiMenuItem: {
 			styleOverrides: {
