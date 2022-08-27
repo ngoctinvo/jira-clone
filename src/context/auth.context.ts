@@ -5,7 +5,7 @@ export type authContextType = {
 	authState: {
 		isAuthenticated: boolean;
 		token: string;
-		user: null;
+		user: {} | null;
 	};
 	authDispatch: Dispatch<any>;
 };
@@ -14,7 +14,9 @@ const authContextDefaultValues: authContextType = {
 	authState: {
 		isAuthenticated: isBrowser && !!localStorage.getItem('access_token'),
 		token: isBrowser ? localStorage.getItem('access_token') || '' : '',
-		user: null,
+		user: isBrowser
+			? JSON.parse(localStorage.getItem('user') || 'null')
+			: '',
 	},
 	authDispatch: () => {},
 };

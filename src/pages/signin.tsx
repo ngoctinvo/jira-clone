@@ -1,71 +1,140 @@
-import React, { useState } from 'react';
-import { Alert, Button, Input, InputLabel, TextField } from '@mui/material';
+import React, { ReactNode, useEffect, useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import * as yup from 'yup';
+import {
+	Alert,
+	Box,
+	Button,
+	Container,
+	Grid,
+	Input,
+	InputLabel,
+	TextField,
+} from '@mui/material';
 import { useAuth } from '../context/auth.context';
 import userAPI from '../services/userAPI';
+import { useRouter } from 'next/router';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import BrandLogo from '../components/icons/BrandLogo';
+import SignInButton from '../components/shared/SignInButton';
+import SignInForm from '../components/features/auth/SignInForm';
+import SignUpForm from '../components/features/auth/SignUpForm';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ForgotPasswordForm from '../components/features/auth/ForgotPasswordForm';
 
 type Props = {};
 
+export enum ActionType {
+	SIGN_IN = 'SIGN_IN',
+	SIGN_UP = 'SIGN_UP',
+	FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+}
+
+function Copyright(props: any) {
+	return (
+		<Typography
+			variant="body2"
+			color="text.secondary"
+			align="center"
+			{...props}
+		>
+			{'Copyright © '}
+			<Link
+				color="inherit"
+				href="https://www.atlassian.com/software/jira"
+			>
+				Jira
+			</Link>{' '}
+			{new Date().getFullYear()}
+			{'.'}
+		</Typography>
+	);
+}
+
 const SignInPage = (props: Props) => {
+	const router = useRouter();
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+	const [pageType, setPageType] = useState(ActionType.FORGOT_PASSWORD);
+	const schema = yup
+		.object({
+			email: yup.string().email().required(),
+			password: yup.string().required(),
+		})
+		.required();
 
-	const handleSignIn = async () => {
-		try {
-			const data = await userAPI.signIn({
-				email: email,
-				password: password,
-			});
-			// Case: wrong credentials
-			if (!data.content) {
-				console.log('Sai tài khoản/mật khẩu');
-				return;
-			}
-			// Case: correct credentials
-			console.log(data);
-			authDispatch({
-				type: 'UPDATE_USER',
-				payload: data.content,
-			});
-			authDispatch({
-				type: 'STORE_TOKEN',
-				payload: data.content.accessToken,
-			});
-		} catch (error) {
-			console.log(error);
+	const formControls = useForm({ resolver: yupResolver(schema) });
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.push('/');
 		}
-	};
+	}, [isAuthenticated]);
+
 	const handleSignOut = () => {};
 
 	return (
 		<div>
-			<h1>Sign In</h1>
-			<form>
-				<TextField
-					label="Email"
-					type="email"
-					required
-					variant="filled"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<TextField
-					label="Password"
-					type="password"
-					required
-					variant="filled"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-			</form>
-			<Button variant="contained" onClick={handleSignIn}>
-				Sign in
-			</Button>
+			<Container component="main" maxWidth="xs">
+				<div className="w-2/3 mx-auto">
+					<BrandLogo className="" />
+				</div>
+				<Box
+					sx={{
+						marginTop: 4,
+						padding: 4,
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						boxShadow: 'rgb(0 0 0 / 10%) 0px 0px 10px',
+					}}
+				>
+					{
+						{
+							SIGN_IN: (
+								<SignInForm
+									formControls={formControls}
+									isLoading={isLoading}
+									setIsLoading={setIsLoading}
+									setPageType={setPageType}
+								/>
+							),
+							SIGN_UP: <SignUpForm setPageType={setPageType} />,
+							FORGOT_PASSWORD: (
+								<ForgotPasswordForm setPageType={setPageType} />
+							),
+						}[pageType]
+					}
+				</Box>
+				<Copyright sx={{ mt: 8, mb: 4 }} />
+			</Container>
+			<ToastContainer
+				position="top-right"
+				autoClose={4000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="colored"
+			/>
 		</div>
 	);
 };
+SignInPage.authDisabled = true;
 
 export default SignInPage;

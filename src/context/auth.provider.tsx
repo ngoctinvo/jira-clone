@@ -6,7 +6,7 @@ const isBrowser = typeof window !== 'undefined';
 const INITIAL_STATE = {
 	isAuthenticated: isBrowser && !!localStorage.getItem('access_token'),
 	token: isBrowser ? localStorage.getItem('access_token') || '' : '',
-	user: null,
+	user: isBrowser ? JSON.parse(localStorage.getItem('user') || 'null') : '',
 };
 
 function reducer(
@@ -31,7 +31,19 @@ function reducer(
 				isAuthenticated: false,
 			};
 		}
+		case 'LOGOUT': {
+			localStorage.removeItem('user');
+			localStorage.removeItem('access_token');
+			return {
+				...state,
+				user: null,
+				token: '',
+				isAuthenticated: false,
+			};
+		}
 		case 'UPDATE_USER': {
+			localStorage.setItem('user', JSON.stringify(action.payload));
+
 			return {
 				...state,
 				user: { ...action.payload },
