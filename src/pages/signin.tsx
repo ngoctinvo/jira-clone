@@ -30,6 +30,8 @@ import SignInButton from '../components/shared/SignInButton';
 import SignInForm from '../components/features/auth/SignInForm';
 import SignUpForm from '../components/features/auth/SignUpForm';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ForgotPasswordForm from '../components/features/auth/ForgotPasswordForm';
 
 type Props = {};
 
@@ -65,7 +67,7 @@ const SignInPage = (props: Props) => {
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
 	const [isLoading, setIsLoading] = useState(false);
-	const [pageType, setPageType] = useState(ActionType.SIGN_IN);
+	const [pageType, setPageType] = useState(ActionType.FORGOT_PASSWORD);
 	const schema = yup
 		.object({
 			email: yup.string().email().required(),
@@ -110,7 +112,9 @@ const SignInPage = (props: Props) => {
 								/>
 							),
 							SIGN_UP: <SignUpForm setPageType={setPageType} />,
-							FORGOT_PASSWORD: null,
+							FORGOT_PASSWORD: (
+								<ForgotPasswordForm setPageType={setPageType} />
+							),
 						}[pageType]
 					}
 				</Box>
@@ -118,7 +122,7 @@ const SignInPage = (props: Props) => {
 			</Container>
 			<ToastContainer
 				position="top-right"
-				autoClose={2000}
+				autoClose={4000}
 				hideProgressBar={false}
 				newestOnTop={false}
 				closeOnClick
