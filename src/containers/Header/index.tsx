@@ -1,7 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
+import LaunchIcon from '@mui/icons-material/Launch';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -18,12 +18,17 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from '../../context/auth.context';
 import styles from './styles.module.scss';
-// import AuthForm from "/components/AuthForm";
-// import { AuthContext } from "/context/auth/auth.context";
 import logo from '/public/images/logocute.png';
+import logoIconSVG from '../../../public/logoIcon.svg';
+import { AppBar, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { bgcolor } from '@mui/system';
 
 const Header = () => {
-	const { authState, authDispatch } = useAuth();
+	const router = useRouter();
+	const {
+		authState: { isAuthenticated, user },
+		authDispatch,
+	} = useAuth();
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -42,31 +47,22 @@ const Header = () => {
 		setAnchorElUser(null);
 	};
 
-	// const {
-	// 	authState: { isAuthenticated, user },
-	// 	authDispatch,
-	// } = React.useContext(AuthContext);
-
-	const [showAuth, setShowAuth] = React.useState(false);
-
 	// const handleShowAuth = (show) => {
 	// 	setShowAuth(show);
 	// };
 
-	// const router = useRouter();
-
-	// let pages = [
-	// 	{
-	// 		label: 'Tra cứu',
-	// 		url: '/',
-	// 	},
-	// 	{
-	// 		label: 'Luyện viết',
-	// 		url: '/writing',
-	// 	},
-	// 	{ label: 'Đóng góp', url: '/contribution' },
-	// 	{ label: 'Về chúng tớ', url: '/about' },
-	// ];
+	let pages = [
+		{
+			label: 'Tra cứu',
+			url: '/',
+		},
+		{
+			label: 'Luyện viết',
+			url: '/writing',
+		},
+		{ label: 'Đóng góp', url: '/contribution' },
+		{ label: 'Về chúng tớ', url: '/about' },
+	];
 
 	// if (user?.type === 'ADMIN') {
 	// 	pages.push({
@@ -75,28 +71,32 @@ const Header = () => {
 	// 	});
 	// }
 
-	// const settings = [
-	// 	{
-	// 		label: 'Tài khoản',
-	// 		event: () => {
-	// 			router.push('/account');
-	// 		},
-	// 	},
-	// 	{
-	// 		label: 'Đăng xuất',
-	// 		event: () => {
-	// 			authDispatch({
-	// 				type: 'LOGOUT',
-	// 			});
-	// 			setShowAuth(false);
-	// 			router.push('/');
-	// 		},
-	// 	},
-	// ];
+	const jiraOptions = [
+		{
+			label: 'Profile',
+			event: () => {
+				router.push('/account');
+			},
+		},
+		{
+			label: 'Personal Settings',
+			event: () => {
+				router.push('/account');
+			},
+		},
+		{
+			label: 'Log out',
+			event: () => {
+				authDispatch({
+					type: 'LOGOUT',
+				});
+			},
+		},
+	];
 
 	return (
-		<AppBar position="static" style={{ backgroundColor: '#0091a7' }}>
-			<Container maxWidth="lg">
+		<AppBar position="static" color="inherit">
+			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<Typography
 						variant="h6"
@@ -113,13 +113,22 @@ const Header = () => {
 							textDecoration: 'none',
 						}}
 					>
-						<Image
-							src={logo}
-							width={60}
-							height={50}
-							alt="logo"
-							priority
-						/>
+						<Button
+							sx={{
+								color: '#000',
+								textTransform: 'capitalize',
+								fontSize: 20,
+							}}
+						>
+							<Image
+								src={logoIconSVG}
+								width={30}
+								height={30}
+								alt="logo"
+								priority
+							/>
+							Jira Software
+						</Button>
 					</Typography>
 
 					<Box
@@ -156,7 +165,7 @@ const Header = () => {
 								display: { xs: 'block', md: 'none' },
 							}}
 						>
-							{/* {pages.map((page) => (
+							{pages.map((page) => (
 								<Link href={page.url} key={uuidv4()}>
 									<MenuItem onClick={handleCloseNavMenu}>
 										<Typography textAlign="center">
@@ -164,7 +173,7 @@ const Header = () => {
 										</Typography>
 									</MenuItem>
 								</Link>
-							))} */}
+							))}
 						</Menu>
 					</Box>
 					<Typography
@@ -221,83 +230,123 @@ const Header = () => {
 						))} */}
 					</Box>
 
-					{/* {isAuthenticated ? (
-						<Box sx={{ flexGrow: 0 }}>
-							<Tooltip title={user?.email || 'Settings'}>
-								<IconButton
-									onClick={handleOpenUserMenu}
-									sx={{ p: 0 }}
+					<Box sx={{ flexGrow: 0 }}>
+						<Tooltip title={user?.email || 'Settings'}>
+							<IconButton
+								onClick={handleOpenUserMenu}
+								sx={{ p: 0 }}
+							>
+								<Avatar
+									src={user?.avatar}
+									alt={user?.email || 'Avatar'}
 								>
-									<Avatar
-										src="/images/avatar-cute.png"
-										alt={user?.email || 'Avatar'}
-									>
-										<PersonRoundedIcon />
-									</Avatar>
-								</IconButton>
-							</Tooltip>
-							<Menu
-								sx={{ mt: '45px' }}
-								id="menu-appbar"
-								anchorEl={anchorElUser}
-								anchorOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								open={Boolean(anchorElUser)}
-								onClose={handleCloseUserMenu}
-							>
-								{settings.map((setting) => (
-									<MenuItem
-										key={uuidv4()}
-										onClick={() => {
-											setting.event();
-											handleCloseUserMenu();
-										}}
-									>
-										<Typography textAlign="center">
-											{setting.label}
-										</Typography>
-									</MenuItem>
-								))}
-							</Menu>
-						</Box>
-					) : (
-						<Box>
-							<Button
-								variant="contained"
-								className="btnLightPrimiary"
-								sx={{ mr: 2 }}
-								onClick={() => {
-									handleShowAuth(true);
-								}}
-							>
-								Đăng nhập
-							</Button>
-							{showAuth && (
-								<AuthForm
-									handleShowAuth={handleShowAuth}
-									show={showAuth}
-								></AuthForm>
-							)}
-						</Box>
-					)} */}
-					<Button
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						onClick={() => {
-							authDispatch({
-								type: 'LOGOUT',
-							});
+									<PersonRoundedIcon />
+								</Avatar>
+							</IconButton>
+						</Tooltip>
+					</Box>
+					<Menu
+						sx={{ mt: '45px' }}
+						id="menu-appbar"
+						anchorEl={anchorElUser}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
 						}}
+						keepMounted
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						open={Boolean(anchorElUser)}
+						onClose={handleCloseUserMenu}
 					>
-						Sign Out
-					</Button>
+						<Box px={2} py={1}>
+							<Typography
+								variant="h6"
+								sx={{ fontSize: 11, fontWeight: 700 }}
+							>
+								ACCOUNT
+							</Typography>
+							<Box display="flex" mt={2}>
+								<Avatar
+									src={user?.avatar}
+									alt={user?.email || 'Avatar'}
+								>
+									<PersonRoundedIcon />
+								</Avatar>
+								<Box ml={1}>
+									<Typography sx={{ fontSize: 14 }}>
+										{user?.name}
+									</Typography>
+									<Typography variant="caption">
+										{user?.email}
+									</Typography>
+								</Box>
+							</Box>
+						</Box>
+						<MenuItem>
+							<ListItemText disableTypography>
+								Manage Account
+							</ListItemText>
+							<ListItemIcon>
+								<LaunchIcon />
+							</ListItemIcon>
+						</MenuItem>
+
+						<Divider />
+						<Typography
+							px={2}
+							py={1}
+							variant="h6"
+							sx={{ fontSize: 11, fontWeight: 700 }}
+						>
+							UPGRADE
+						</Typography>
+						<MenuItem>
+							<ListItemText disableTypography>
+								Try the Standard plan
+							</ListItemText>
+							<Typography
+								color="HighlightText"
+								sx={{
+									ml: 1,
+									borderRadius: '3px',
+									fontWeight: 700,
+									p: '2px 3px',
+									fontSize: 11,
+									bgcolor: 'primary.main',
+								}}
+							>
+								FREE 14-DAY TRIAL
+							</Typography>
+						</MenuItem>
+
+						<Divider />
+
+						<Typography
+							px={2}
+							py={1}
+							variant="h6"
+							sx={{ fontSize: 11, fontWeight: 700 }}
+						>
+							JIRA
+						</Typography>
+						{jiraOptions.map((option, i, arr) => (
+							<>
+								{arr.length - 1 === i && <Divider />}
+								<MenuItem
+									key={uuidv4()}
+									onClick={() => {
+										option.event();
+										handleCloseUserMenu();
+									}}
+								>
+									{option.label}
+								</MenuItem>
+							</>
+						))}
+					</Menu>
 				</Toolbar>
 			</Container>
 		</AppBar>

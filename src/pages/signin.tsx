@@ -67,7 +67,7 @@ const SignInPage = (props: Props) => {
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
 	const [isLoading, setIsLoading] = useState(false);
-	const [pageType, setPageType] = useState(ActionType.FORGOT_PASSWORD);
+	const [pageType, setPageType] = useState(ActionType.SIGN_IN);
 	const schema = yup
 		.object({
 			email: yup.string().email().required(),

@@ -68,7 +68,7 @@ export default function SignInForm({
 			// Case: correct credentials
 			authDispatch({
 				type: 'UPDATE_USER',
-				payload: data,
+				payload: data.content,
 			});
 			authDispatch({
 				type: 'STORE_TOKEN',
