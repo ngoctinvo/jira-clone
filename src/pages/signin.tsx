@@ -28,8 +28,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import BrandLogo from '../components/icons/BrandLogo';
 import SignInButton from '../components/shared/SignInButton';
 import SignInForm from '../components/features/auth/SignInForm';
+import SignUpForm from '../components/features/auth/SignUpForm';
+import { ToastContainer } from 'react-toastify';
 
 type Props = {};
+
+export enum ActionType {
+	SIGN_IN = 'SIGN_IN',
+	SIGN_UP = 'SIGN_UP',
+	FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+}
 
 function Copyright(props: any) {
 	return (
@@ -57,6 +65,7 @@ const SignInPage = (props: Props) => {
 	const { authState, authDispatch } = useAuth();
 	const { isAuthenticated, token, user } = authState;
 	const [isLoading, setIsLoading] = useState(false);
+	const [pageType, setPageType] = useState(ActionType.SIGN_IN);
 	const schema = yup
 		.object({
 			email: yup.string().email().required(),
@@ -90,14 +99,35 @@ const SignInPage = (props: Props) => {
 						boxShadow: 'rgb(0 0 0 / 10%) 0px 0px 10px',
 					}}
 				>
-					<SignInForm
-						formControls={formControls}
-						isLoading={isLoading}
-						setIsLoading={setIsLoading}
-					/>
+					{
+						{
+							SIGN_IN: (
+								<SignInForm
+									formControls={formControls}
+									isLoading={isLoading}
+									setIsLoading={setIsLoading}
+									setPageType={setPageType}
+								/>
+							),
+							SIGN_UP: <SignUpForm setPageType={setPageType} />,
+							FORGOT_PASSWORD: null,
+						}[pageType]
+					}
 				</Box>
 				<Copyright sx={{ mt: 8, mb: 4 }} />
 			</Container>
+			<ToastContainer
+				position="top-right"
+				autoClose={2000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="colored"
+			/>
 		</div>
 	);
 };

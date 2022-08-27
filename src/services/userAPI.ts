@@ -1,24 +1,31 @@
 import {
 	SignInContent,
 	SignInResponse,
+	SignUpContent,
 	SignUpResponse,
 	UserJiraLogin,
 	UserJiraModel,
 } from '../interface/userAuthentication';
 import axiosClient from './axiosClient';
 
-interface Payload {
-	content: SignInContent;
+interface Payload<T> {
+	statusCode: number;
+	message: string;
+	content: T;
+	dateTime: string;
 }
 
 const userAPI = {
 	register: (registerInfo: UserJiraModel) => {
-		return axiosClient.post<SignUpResponse | string>('Users/signup', {
+		return axiosClient.post<Payload<SignUpContent>>('Users/signup', {
 			...registerInfo,
 		});
 	},
 	signIn: (loginInfo: UserJiraLogin) => {
-		return axiosClient.post<SignInContent>('Users/signin', loginInfo);
+		return axiosClient.post<Payload<SignInContent>>(
+			'Users/signin',
+			loginInfo
+		);
 	},
 	validateToken: (token: string) => {
 		return axiosClient.post<string>('Users/TestToken', {

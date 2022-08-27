@@ -23,17 +23,20 @@ import {
 } from '@mui/material';
 import SignInButton from '../../../shared/SignInButton';
 import userAPI from '../../../../services/userAPI';
+import { ActionType } from '../../../../pages/signin';
 
 interface Props {
 	formControls: UseFormReturn<FieldValues, any>;
 	isLoading: boolean;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setPageType: React.Dispatch<React.SetStateAction<ActionType>>;
 }
 
 export default function SignInForm({
 	formControls,
 	isLoading,
 	setIsLoading,
+	setPageType,
 }: Props) {
 	const {
 		handleSubmit,
@@ -51,7 +54,7 @@ export default function SignInForm({
 				password,
 			});
 			// Case: wrong credentials
-			if (!data.accessToken) {
+			if (!data.content.accessToken) {
 				setError('email', {
 					type: 'focus',
 					message: 'Wrong email or password',
@@ -69,7 +72,7 @@ export default function SignInForm({
 			});
 			authDispatch({
 				type: 'STORE_TOKEN',
-				payload: data.accessToken,
+				payload: data.content.accessToken,
 			});
 		} catch (error) {
 			console.log(error);
@@ -134,10 +137,20 @@ export default function SignInForm({
 			</SignInButton>
 			<Grid container spacing={1}>
 				<Grid item>
-					<Link href="#">Forgot password?</Link>
+					<Link
+						href="#"
+						onClick={() => setPageType(ActionType.FORGOT_PASSWORD)}
+					>
+						Forgot password?
+					</Link>
 				</Grid>
 				<Grid item>
-					<Link href="#">{"Don't have an account? Sign Up"}</Link>
+					<Link
+						href="#"
+						onClick={() => setPageType(ActionType.SIGN_UP)}
+					>
+						{"Don't have an account? Sign Up"}
+					</Link>
 				</Grid>
 			</Grid>
 		</Box>

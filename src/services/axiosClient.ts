@@ -41,12 +41,12 @@ axiosClient.interceptors.response.use(
 	(response: any) => {
 		// request thành công
 		// thay đổi format của reponse trước khi trả ra cho nơi gọi request
-		return response.data.content;
+		return response.data;
 	},
 	(error: AxiosError<{ content: string }>) => {
 		// request thất bại
 		// thay đổi format của error trước khi trả ra cho nơi gọi request
-		return error.response?.data?.content;
+		return error.response?.data;
 	}
 );
 
