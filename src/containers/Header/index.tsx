@@ -1,20 +1,25 @@
 import { KeyboardArrowDown } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { AppBar } from '@mui/material';
+import {
+	AppBar,
+	Divider,
+	Drawer,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemText,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import logoIconSVG from '../../../public/logoIcon.svg';
 import { useAuth } from '../../context/auth.context';
 import AvatarButton from './components/AvatarButton';
@@ -29,14 +34,20 @@ const Header = () => {
 		authDispatch,
 	} = useAuth();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
+	const [isOpen, setIsOpen] = React.useState(false);
 
 	const handleOpenNavMenu = (event: any) => {
-		setAnchorElNav(event.currentTarget);
+		setIsOpen(true);
 	};
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
+	const handleCloseNavMenu = (event: any) => {
+		if (
+			event.type === 'keydown' &&
+			((event as React.KeyboardEvent).key === 'Tab' ||
+				(event as React.KeyboardEvent).key === 'Shift')
+		) {
+			return;
+		}
+		setIsOpen(false);
 	};
 	const recordButtonPosition = (event: any) => {
 		setAnchorEl(event.currentTarget);
@@ -124,34 +135,47 @@ const Header = () => {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'left',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-							open={Boolean(anchorElNav)}
+
+						<Drawer
+							anchor="left"
+							open={isOpen}
 							onClose={handleCloseNavMenu}
-							sx={{
-								display: { xs: 'block', md: 'none' },
-							}}
 						>
-							{pages.map((page) => (
-								<Link href={page.url} key={uuidv4()}>
-									<MenuItem onClick={handleCloseNavMenu}>
-										<Typography textAlign="center">
-											{page.label}
-										</Typography>
-									</MenuItem>
-								</Link>
-							))}
-						</Menu>
+							<Box
+								sx={{
+									width: 250,
+								}}
+								role="presentation"
+								onClick={handleCloseNavMenu}
+								onKeyDown={handleCloseNavMenu}
+							>
+								<List>
+									{pages.map((page, index) => (
+										<ListItem key={index} disablePadding>
+											<ListItemButton>
+												<ListItemText
+													primary={page.label}
+												/>
+											</ListItemButton>
+										</ListItem>
+									))}
+								</List>
+								<Divider />
+								<List>
+									{[
+										'Report bugs',
+										'Terms and conditions',
+										'Privacy policy',
+									].map((text, index) => (
+										<ListItem key={text} disablePadding>
+											<ListItemButton>
+												<ListItemText primary={text} />
+											</ListItemButton>
+										</ListItem>
+									))}
+								</List>
+							</Box>
+						</Drawer>
 					</Box>
 					<Typography
 						variant="h5"
