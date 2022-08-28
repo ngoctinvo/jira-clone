@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MenuSide from "../components/MenuSide/MenuSide";
+import MenuSide from "./MenuSide/MenuSide";
 import Footer from "./Footer";
 import Header from "./Header";
 // import { getUserClient } from '/apis/getUserClient';
