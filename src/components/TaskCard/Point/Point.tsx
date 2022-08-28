@@ -4,7 +4,7 @@ type Props = {
 };
 const Priority = (props: Props) => {
   return (
-    <div className="py-3 px-5 rounded-lg bg-slate-300 inline-block">
+    <div className="py-1 px-3 rounded-lg bg-slate-300 inline-block h-fit">
       <span className="text-base font-semibold text-black">{props.value}</span>
     </div>
   );

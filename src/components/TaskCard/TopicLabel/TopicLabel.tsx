@@ -6,12 +6,14 @@ type Props = {
 };
 const Priority = (props: Props) => {
   return (
-    <Box
-      sx={{ backgroundColor: props.color }}
-      className="p-3 min-h-fit w-100 block"
+    <div
+      style={{ backgroundColor: props.color }}
+      className="h-8 px-3 w-100 block"
     >
-      <span className="text-sm font-normal text-black">{props.value}</span>
-    </Box>
+      <span className="block text-sm font-normal text-black leading-8">
+        {props.value}
+      </span>
+    </div>
   );
 };
 
