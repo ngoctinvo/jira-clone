@@ -5,11 +5,11 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import TopicLabel from "./TopicLabel/TopicLabel";
-import Point from "./Point/Point";
-import Priority from "./Priority/Priority";
-import Assignee from "./Assignee/Assignee";
-import { Task } from "../../interface/Task";
+import TopicLabel from "../../TaskCard/TopicLabel/TopicLabel";
+import Point from "../../TaskCard/Point/Point";
+import Priority from "../../TaskCard/Priority/Priority";
+import Assignee from "../../TaskCard/Assignee/Assignee";
+import { Task } from "../../../interface/Task";
 import Modal from "@mui/material/Modal";
 
 type Props = {
@@ -27,15 +27,11 @@ const style = {
   p: 4,
 };
 
-const TaskCard = (props: Props) => {
+const TaskItem = (props: Props) => {
   const [opened, setOpened] = useState(false);
   console.log("prio", props.value.priorityId);
   return (
-    <Box
-      sx={{ minWidth: 275 }}
-      className="my-2"
-      onClick={() => setOpened(true)}
-    >
+    <Box className="my-2 w-100" onClick={() => setOpened(true)}>
       <Card variant="outlined" className="p-5">
         <p>{props.value.taskName}</p>
         <TopicLabel value="Topic Label" color="yellow" />
@@ -75,4 +71,4 @@ const TaskCard = (props: Props) => {
   );
 };
 
-export default TaskCard;
+export default TaskItem;

@@ -66,12 +66,12 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         theme="colored"
       />
       <Header></Header>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={2}>
             <MenuSide />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={10}>
             {children}
           </Grid>
         </Grid>

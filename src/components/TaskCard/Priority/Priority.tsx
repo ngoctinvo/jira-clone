@@ -10,18 +10,23 @@ const Priority = (props: Props) => {
   switch (props.level) {
     case 3: {
       icon = <KeyboardDoubleArrowUpIcon color="error" />;
+      break;
     }
     case 2: {
       icon = <KeyboardArrowUpIcon color="warning" />;
+      break;
     }
     case 1: {
       icon = <DensityMediumIcon color="success" />;
+      break;
     }
     default: {
       icon = <DensityMediumIcon color="success" />;
+      break;
     }
   }
-  return <div className="p-5 bg-white inline-block">{icon}</div>;
+  console.log("icom", icon);
+  return <div className="p-2 inline-block rounded-xl">{icon}</div>;
 };
 
 export default Priority;
