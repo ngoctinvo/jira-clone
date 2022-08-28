@@ -22,11 +22,14 @@ const Active = (props: Props) => {
   const list: Task[] = data.tasks;
 
   return (
-    <div className="flex flex-row">
-      <Column title="TO DO" list={list} />
-      <Column title="DOING" list={list} />
-      <Column title="TESTING" list={list} />
-      <Column title="DONE" list={list} />
+    <div>
+      <h1>Project Title</h1>
+      <div className="flex flex-row">
+        <Column title="TO DO" list={list} />
+        <Column title="DOING" list={list} />
+        <Column title="TESTING" list={list} />
+        <Column title="DONE" list={list} />
+      </div>
     </div>
   );
 };
