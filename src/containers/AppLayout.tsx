@@ -1,11 +1,15 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // import NextNProgress from "nextjs-progressbar";
-import React, { useContext, useEffect, useState } from 'react';
-import ScrollToTop from 'react-scroll-to-top';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Footer from './Footer';
-import Header from './Header';
+import React, { useContext, useEffect, useState } from "react";
+import ScrollToTop from "react-scroll-to-top";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MenuSide from "../components/MenuSide/MenuSide";
+import Footer from "./Footer";
+import Header from "./Header";
 // import { getUserClient } from '/apis/getUserClient';
 // import LoadingScreen from '/components/LoadingScreen';
 // import {
@@ -15,56 +19,66 @@ import Header from './Header';
 // import { AuthContext } from '/context/auth/auth.context';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
-	// const {
-	// 	authState: { isAuthenticated, user },
-	// 	authDispatch,
-	// } = useContext(AuthContext);
+  // const {
+  // 	authState: { isAuthenticated, user },
+  // 	authDispatch,
+  // } = useContext(AuthContext);
 
-	const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		// const getUser = async () => {
-		// 	setLoading(true);
-		// 	if (isAuthenticated && !user) {
-		// 		const res = await getUserClient().getUserInfo();
-		// 		if (res?.success) {
-		// 			const userInfo = res.data;
-		// 			authDispatch({
-		// 				type: 'UPDATE_USER',
-		// 				payload: userInfo,
-		// 			});
-		// 		}
-		// 	}
-		// 	setLoading(false);
-		// };
-		// getUser();
-	}, []);
+  useEffect(() => {
+    // const getUser = async () => {
+    // 	setLoading(true);
+    // 	if (isAuthenticated && !user) {
+    // 		const res = await getUserClient().getUserInfo();
+    // 		if (res?.success) {
+    // 			const userInfo = res.data;
+    // 			authDispatch({
+    // 				type: 'UPDATE_USER',
+    // 				payload: userInfo,
+    // 			});
+    // 		}
+    // 	}
+    // 	setLoading(false);
+    // };
+    // getUser();
+  }, []);
 
-	return (
-		<div
-			style={{
-				background: `url(/images/background.png) center no-repeat`,
-				backgroundSize: 'cover',
-			}}
-		>
-			{/* {loading && <LoadingScreen />} */}
-			{/* <NextNProgress color={PRIMARY_COLOR_HOVER} height={5} /> */}
-			<ToastContainer
-				position="top-right"
-				autoClose={2000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="colored"
-			/>
-			<Header></Header>
-			{children}
-			<Footer></Footer>
-			{/* <ScrollToTop
+  return (
+    <div
+      style={{
+        background: `url(/images/background.png) center no-repeat`,
+        backgroundSize: "cover",
+      }}
+    >
+      {/* {loading && <LoadingScreen />} */}
+      {/* <NextNProgress color={PRIMARY_COLOR_HOVER} height={5} /> */}
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <Header></Header>
+      <Container maxWidth="lg">
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <MenuSide />
+          </Grid>
+          <Grid item xs={8}>
+            {children}
+          </Grid>
+        </Grid>
+      </Container>
+      <div className=""></div>
+      <Footer></Footer>
+      {/* <ScrollToTop
 				component={
 					<KeyboardArrowUpIcon
 						sx={{
@@ -84,8 +98,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 								-16px -16px 32px #ffffff;`,
 				}}
 			/> */}
-		</div>
-	);
+    </div>
+  );
 };
 
 export default AppLayout;

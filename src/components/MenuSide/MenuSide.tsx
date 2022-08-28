@@ -24,9 +24,6 @@ const MenuSide = (props: Props) => {
     <Box>
       <h2>current Project Title</h2>
       <List component="nav" aria-label="main mailbox folders">
-        <Link href="/backlog">
-          <a>Backlgo</a>
-        </Link>
         <ListItemButton
           selected={selectedIndex === 0}
           onClick={(event) => handleListItemClick(event, 0)}
@@ -49,8 +46,8 @@ const MenuSide = (props: Props) => {
       <h2>all of project</h2>
       <List component="nav" aria-label="main mailbox folders">
         <ListItemButton
-          selected={selectedIndex === 0}
-          onClick={(event) => handleListItemClick(event, 0)}
+          selected={selectedIndex === 2}
+          onClick={(event) => handleListItemClick(event, 2)}
         >
           <ListItemIcon>
             <InboxIcon />
@@ -58,8 +55,8 @@ const MenuSide = (props: Props) => {
           <ListItemText primary="Projects list" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
+          selected={selectedIndex === 3}
+          onClick={(event) => handleListItemClick(event, 3)}
         >
           <ListItemIcon>
             <DraftsIcon />
