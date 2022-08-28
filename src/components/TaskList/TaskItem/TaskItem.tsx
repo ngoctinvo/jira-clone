@@ -32,13 +32,15 @@ const TaskItem = (props: Props) => {
   console.log("prio", props.value.priorityId);
   return (
     <Box className="my-2 w-100" onClick={() => setOpened(true)}>
-      <Card variant="outlined" className="p-5">
-        <p>{props.value.taskName}</p>
-        <TopicLabel value="Topic Label" color="yellow" />
-        <div className="flex flex-row justify-between items-center mt-5">
-          <Point value={props.value.originalEstimate} />
-          <Priority level={props.value.priorityId} />
-          <Assignee />
+      <Card variant="outlined">
+        <div className="flex flex-row justify-between items-center px-5">
+          <span className="block w-3/4">{props.value.taskName}</span>
+          <div className="flex flex-row justify-between  items-center w-1/4">
+            <TopicLabel value="Topic Label" color="yellow" />
+            <Assignee />
+            <Priority level={props.value.priorityId} />
+            <Point value={props.value.originalEstimate} />
+          </div>
         </div>
       </Card>
       <Modal

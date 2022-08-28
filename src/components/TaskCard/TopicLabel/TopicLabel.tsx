@@ -8,7 +8,7 @@ const Priority = (props: Props) => {
   return (
     <div
       style={{ backgroundColor: props.color }}
-      className="h-8 px-3 w-100 block"
+      className="h-8 px-3 inline-block w-fit"
     >
       <span className="block text-sm font-normal text-black leading-8">
         {props.value}
