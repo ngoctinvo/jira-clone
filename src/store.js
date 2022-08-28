@@ -12,24 +12,24 @@ const dev = process.env.NODE_ENV === "development";
 const _initialState = {};
 
 export const initStore = (initialState = _initialState, { req, res }) => {
-    const clientConfig = new ClientConfig(config, req, res);
-    let middleware = applyMiddleware(
-        logger,
-        createApiMiddleware(clientConfig),
-        clientMiddleware(),
-        thunk
-    );
+  const clientConfig = new ClientConfig(config, req, res);
+  let middleware = applyMiddleware(
+    logger,
+    createApiMiddleware(clientConfig),
+    clientMiddleware(),
+    thunk
+  );
 
-    if (dev) {
-        middleware = composeWithDevTools(middleware);
-    }
-    const store = createStore(rootReducer(), initialState, compose(middleware));
-    store.asyncReducers = {};
-    store.injectReducer = (key, reducer) => {
-        store.asyncReducers[key] = reducer;
-        store.replaceReducer(rootReducer(store.asyncReducers));
-        return store;
-    };
-
+  if (dev) {
+    middleware = composeWithDevTools(middleware);
+  }
+  const store = createStore(rootReducer(), initialState, compose(middleware));
+  store.asyncReducers = {};
+  store.injectReducer = (key, reducer) => {
+    store.asyncReducers[key] = reducer;
+    store.replaceReducer(rootReducer(store.asyncReducers));
     return store;
+  };
+
+  return store;
 };
