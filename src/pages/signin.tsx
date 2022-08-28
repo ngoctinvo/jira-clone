@@ -60,17 +60,17 @@ function Copyright(props: any) {
 }
 
 const SignInPage = (props: Props) => {
-  const router = useRouter();
-  const { authState, authDispatch } = useAuth();
-  const { isAuthenticated, token, user } = authState;
-  const [isLoading, setIsLoading] = useState(false);
-  const [pageType, setPageType] = useState(ActionType.FORGOT_PASSWORD);
-  const schema = yup
-    .object({
-      email: yup.string().email().required(),
-      password: yup.string().required(),
-    })
-    .required();
+	const router = useRouter();
+	const { authState, authDispatch } = useAuth();
+	const { isAuthenticated, token, user } = authState;
+	const [isLoading, setIsLoading] = useState(false);
+	const [pageType, setPageType] = useState(ActionType.SIGN_IN);
+	const schema = yup
+		.object({
+			email: yup.string().email().required(),
+			password: yup.string().required(),
+		})
+		.required();
 
   const formControls = useForm({ resolver: yupResolver(schema) });
 

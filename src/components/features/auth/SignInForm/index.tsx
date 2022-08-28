@@ -46,40 +46,40 @@ export default function SignInForm({
   } = formControls;
   const { authDispatch } = useAuth();
 
-  const onSubmit = async ({ email, password }: any) => {
-    setIsLoading(true);
-    try {
-      const data = await userAPI.signIn({
-        email,
-        password,
-      });
-      // Case: wrong credentials
-      if (!data.content.accessToken) {
-        setError("email", {
-          type: "focus",
-          message: "Wrong email or password",
-        });
-        setError("password", {
-          type: "focus",
-          message: "Wrong email or password",
-        });
-        return;
-      }
-      // Case: correct credentials
-      authDispatch({
-        type: "UPDATE_USER",
-        payload: data,
-      });
-      authDispatch({
-        type: "STORE_TOKEN",
-        payload: data.content.accessToken,
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+	const onSubmit = async ({ email, password }: any) => {
+		setIsLoading(true);
+		try {
+			const data = await userAPI.signIn({
+				email,
+				password,
+			});
+			// Case: wrong credentials
+			if (!data.content.accessToken) {
+				setError('email', {
+					type: 'focus',
+					message: 'Wrong email or password',
+				});
+				setError('password', {
+					type: 'focus',
+					message: 'Wrong email or password',
+				});
+				return;
+			}
+			// Case: correct credentials
+			authDispatch({
+				type: 'UPDATE_USER',
+				payload: data.content,
+			});
+			authDispatch({
+				type: 'STORE_TOKEN',
+				payload: data.content.accessToken,
+			});
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
