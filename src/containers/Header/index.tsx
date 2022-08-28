@@ -1,162 +1,156 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import * as React from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useAuth } from '../../context/auth.context';
-import styles from './styles.module.scss';
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "../../context/auth.context";
+import styles from "./styles.module.scss";
 // import AuthForm from "/components/AuthForm";
 // import { AuthContext } from "/context/auth/auth.context";
-import logo from '/public/images/logocute.png';
+import logo from "/public/images/logocute.png";
 
 const Header = () => {
-	const { authState, authDispatch } = useAuth();
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
-	const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { authState, authDispatch } = useAuth();
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-	const handleOpenNavMenu = (event: any) => {
-		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: any) => {
-		setAnchorElUser(event.currentTarget);
-	};
+  const handleOpenNavMenu = (event: any) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event: any) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-	// const {
-	// 	authState: { isAuthenticated, user },
-	// 	authDispatch,
-	// } = React.useContext(AuthContext);
+  // const {
+  // 	authState: { isAuthenticated, user },
+  // 	authDispatch,
+  // } = React.useContext(AuthContext);
 
-	const [showAuth, setShowAuth] = React.useState(false);
+  const [showAuth, setShowAuth] = React.useState(false);
 
-	// const handleShowAuth = (show) => {
-	// 	setShowAuth(show);
-	// };
+  // const handleShowAuth = (show) => {
+  // 	setShowAuth(show);
+  // };
 
-	// const router = useRouter();
+  // const router = useRouter();
 
-	// let pages = [
-	// 	{
-	// 		label: 'Tra cứu',
-	// 		url: '/',
-	// 	},
-	// 	{
-	// 		label: 'Luyện viết',
-	// 		url: '/writing',
-	// 	},
-	// 	{ label: 'Đóng góp', url: '/contribution' },
-	// 	{ label: 'Về chúng tớ', url: '/about' },
-	// ];
+  // let pages = [
+  // 	{
+  // 		label: 'Tra cứu',
+  // 		url: '/',
+  // 	},
+  // 	{
+  // 		label: 'Luyện viết',
+  // 		url: '/writing',
+  // 	},
+  // 	{ label: 'Đóng góp', url: '/contribution' },
+  // 	{ label: 'Về chúng tớ', url: '/about' },
+  // ];
 
-	// if (user?.type === 'ADMIN') {
-	// 	pages.push({
-	// 		label: 'Quản lý từ',
-	// 		url: '/management',
-	// 	});
-	// }
+  // if (user?.type === 'ADMIN') {
+  // 	pages.push({
+  // 		label: 'Quản lý từ',
+  // 		url: '/management',
+  // 	});
+  // }
 
-	// const settings = [
-	// 	{
-	// 		label: 'Tài khoản',
-	// 		event: () => {
-	// 			router.push('/account');
-	// 		},
-	// 	},
-	// 	{
-	// 		label: 'Đăng xuất',
-	// 		event: () => {
-	// 			authDispatch({
-	// 				type: 'LOGOUT',
-	// 			});
-	// 			setShowAuth(false);
-	// 			router.push('/');
-	// 		},
-	// 	},
-	// ];
+  // const settings = [
+  // 	{
+  // 		label: 'Tài khoản',
+  // 		event: () => {
+  // 			router.push('/account');
+  // 		},
+  // 	},
+  // 	{
+  // 		label: 'Đăng xuất',
+  // 		event: () => {
+  // 			authDispatch({
+  // 				type: 'LOGOUT',
+  // 			});
+  // 			setShowAuth(false);
+  // 			router.push('/');
+  // 		},
+  // 	},
+  // ];
 
-	return (
-		<AppBar position="static" style={{ backgroundColor: '#0091a7' }}>
-			<Container maxWidth="lg">
-				<Toolbar disableGutters>
-					<Typography
-						variant="h6"
-						noWrap
-						component="a"
-						href="/"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'inherit',
-							textDecoration: 'none',
-						}}
-					>
-						<Image
-							src={logo}
-							width={60}
-							height={50}
-							alt="logo"
-							priority
-						/>
-					</Typography>
+  return (
+    <AppBar position="static" style={{ backgroundColor: "#0091a7" }}>
+      <Container maxWidth="lg">
+        <Toolbar disableGutters>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Image src={logo} width={60} height={50} alt="logo" priority />
+          </Typography>
 
-					<Box
-						sx={{
-							flexGrow: 1,
-							display: { xs: 'flex', md: 'none' },
-						}}
-					>
-						<IconButton
-							size="large"
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={handleOpenNavMenu}
-							color="inherit"
-						>
-							<MenuIcon />
-						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'left',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
-							sx={{
-								display: { xs: 'block', md: 'none' },
-							}}
-						>
-							{/* {pages.map((page) => (
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+            }}
+          >
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
+            >
+              {/* {pages.map((page) => (
 								<Link href={page.url} key={uuidv4()}>
 									<MenuItem onClick={handleCloseNavMenu}>
 										<Typography textAlign="center">
@@ -165,40 +159,34 @@ const Header = () => {
 									</MenuItem>
 								</Link>
 							))} */}
-						</Menu>
-					</Box>
-					<Typography
-						variant="h5"
-						noWrap
-						component="a"
-						href=""
-						sx={{
-							mr: 2,
-							display: { xs: 'flex', md: 'none' },
-							flexGrow: 1,
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'inherit',
-							textDecoration: 'none',
-						}}
-					>
-						<Image
-							src={logo}
-							width={40}
-							height={40}
-							alt="logo"
-							priority
-						/>
-					</Typography>
-					<Box
-						sx={{
-							flexGrow: 1,
-							display: { xs: 'none', md: 'flex' },
-							ml: 2,
-						}}
-					>
-						{/* {pages.map((page) => (
+            </Menu>
+          </Box>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Image src={logo} width={40} height={40} alt="logo" priority />
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              ml: 2,
+            }}
+          >
+            {/* {pages.map((page) => (
 							<Link href={page.url} key={uuidv4()}>
 								<Button
 									onClick={handleCloseNavMenu}
@@ -219,9 +207,9 @@ const Header = () => {
 								</Button>
 							</Link>
 						))} */}
-					</Box>
+          </Box>
 
-					{/* {isAuthenticated ? (
+          {/* {isAuthenticated ? (
 						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip title={user?.email || 'Settings'}>
 								<IconButton
@@ -287,20 +275,20 @@ const Header = () => {
 							)}
 						</Box>
 					)} */}
-					<Button
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
-						onClick={() => {
-							authDispatch({
-								type: 'LOGOUT',
-							});
-						}}
-					>
-						Sign Out
-					</Button>
-				</Toolbar>
-			</Container>
-		</AppBar>
-	);
+          <Button
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={() => {
+              authDispatch({
+                type: "LOGOUT",
+              });
+            }}
+          >
+            Sign Out
+          </Button>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 };
 export default Header;
