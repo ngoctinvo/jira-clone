@@ -3,7 +3,7 @@ import TaskItem from "./TaskItem/TaskItem";
 import { Task } from "../../interface/Task";
 type Props = {
   list: Task[];
-  title: string;
+  title?: string;
 };
 const TaskList = (props: Props) => {
   return (

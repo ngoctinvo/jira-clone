@@ -1,17 +1,6 @@
 import data from '../../public/data.json';
 import Column from '../components/Column/Column';
-interface Task {
-	listUserAsign: string[] | undefined;
-	taskName: string | undefined;
-	description: string | undefined;
-	statusId: string | undefined;
-	originalEstimate: number | undefined;
-	timeTrackingSpent: number | undefined;
-	timeTrackingRemaining: number | undefined;
-	projectId: number | undefined;
-	typeId: number | undefined;
-	priorityId: number | undefined;
-}
+import {Task} from "../interface/Task";
 
 type Props = {};
 
