@@ -90,7 +90,6 @@ const Header = () => {
 						variant="h6"
 						noWrap
 						component="a"
-						href="/"
 						sx={{
 							mr: 2,
 							display: { xs: 'none', md: 'flex' },
@@ -107,6 +106,7 @@ const Header = () => {
 								textTransform: 'capitalize',
 								fontSize: 20,
 							}}
+							onClick={() => router.push('/')}
 						>
 							<Image
 								src={logoIconSVG}
@@ -210,7 +210,6 @@ const Header = () => {
 					>
 						{pages.map((page, i) => (
 							<React.Fragment key={i}>
-
 								<Button
 									onClick={recordButtonPosition}
 									endIcon={<KeyboardArrowDown />}
@@ -263,6 +262,13 @@ const Header = () => {
 								</Menu>
 							</React.Fragment>
 						))}
+						<Button
+							variant="contained"
+							size="small"
+							onClick={() => router.push('/createproject')}
+						>
+							Create
+						</Button>
 					</Box>
 
 					<Search>
